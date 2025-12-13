@@ -1,0 +1,34 @@
+# macOS metadata files
+._*
+.DS_Store
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Temporary/development files
+*.template
+*.sh
+create_*.py
+generate_*.py
+
+# Git directory (shouldn't be tracked)
+.git/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Only keep the essential files:
+# - *.ipynb (Jupyter notebooks)
+# - *.html (HTML tutorials)
+# - README.md (if exists)
+
