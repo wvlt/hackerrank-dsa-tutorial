@@ -9,6 +9,26 @@
 
 ---
 
+<div align="center">
+
+### 🌟 **Love This Repository? Help Others Discover It!**
+
+**⭐ Star this repository** if you find it helpful - it helps other learners find quality DSA tutorials!
+
+**📤 Share with friends** who are preparing for coding interviews or learning data structures & algorithms.
+
+**🔔 Watch** the repository to get notified when new tutorials are added!
+
+[![GitHub stars](https://img.shields.io/github/stars/wvlt/hackerrank-dsa-tutorial?style=social&label=Star)](https://github.com/wvlt/hackerrank-dsa-tutorial)
+[![GitHub forks](https://img.shields.io/github/forks/wvlt/hackerrank-dsa-tutorial?style=social&label=Fork)](https://github.com/wvlt/hackerrank-dsa-tutorial/fork)
+[![GitHub watchers](https://img.shields.io/github/watchers/wvlt/hackerrank-dsa-tutorial?style=social&label=Watch)](https://github.com/wvlt/hackerrank-dsa-tutorial)
+
+**Your support helps make quality education accessible to everyone! 🙏**
+
+</div>
+
+---
+
 ## 📚 About This Repository
 
 This repository contains comprehensive, interactive tutorials for solving **HackerRank Data Structures & Algorithms problems**. Each problem includes:
@@ -169,9 +189,40 @@ This repository helps you learn:
 
 ---
 
-## ⭐ Star This Repository
+## ⭐ Support This Project
 
-If you find these tutorials helpful, please ⭐ star this repository to help others discover it!
+<div align="center">
+
+### **Help This Repository Grow!**
+
+If these tutorials have helped you in your coding journey, please consider:
+
+**⭐ Starring this repository** - Helps other learners discover quality DSA resources
+
+**📤 Sharing with your network** - Spread the knowledge with friends, classmates, or colleagues
+
+**💬 Providing feedback** - Open an issue or discussion to share your thoughts
+
+**🎥 Subscribing to [YouTube Channel](https://www.youtube.com/@AmirCharkhi)** - Get notified of new video tutorials
+
+**💼 Connecting on [LinkedIn](https://www.linkedin.com/in/amircharkhi)** - Join the community of learners
+
+---
+
+### **Why Your Support Matters**
+
+- 🌍 **Reach More Learners**: Stars and shares help this repository appear in search results
+- 📚 **Create More Content**: Your engagement encourages creation of additional tutorials
+- 🤝 **Build Community**: Together we can make DSA learning accessible to everyone
+- 🎯 **Help Others Succeed**: Your recommendation could help someone land their dream job
+
+**Every star, share, and subscription makes a difference. Thank you for being part of this learning community! 🙏**
+
+[![GitHub stars](https://img.shields.io/github/stars/wvlt/hackerrank-dsa-tutorial?style=for-the-badge)](https://github.com/wvlt/hackerrank-dsa-tutorial/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/wvlt/hackerrank-dsa-tutorial?style=for-the-badge)](https://github.com/wvlt/hackerrank-dsa-tutorial/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/wvlt/hackerrank-dsa-tutorial?style=for-the-badge)](https://github.com/wvlt/hackerrank-dsa-tutorial/watchers)
+
+</div>
 
 ---
 
