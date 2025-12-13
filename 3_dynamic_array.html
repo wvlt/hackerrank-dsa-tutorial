@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Array | HackerRank DSA Tutorial</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px; margin: 0 auto; background: white;
+            border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 40px; text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 40px; }
+        .section h2 {
+            color: #667eea; font-size: 1.8em; margin-bottom: 15px;
+            padding-bottom: 10px; border-bottom: 3px solid #667eea;
+        }
+        .code-block {
+            background: #2d2d2d; color: #f8f8f2; padding: 20px;
+            border-radius: 8px; overflow-x: auto; margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .code-block .comment { color: #75715e; }
+        .code-block .keyword { color: #f92672; }
+        .code-block .function { color: #a6e22e; }
+        .example {
+            background: #e8f4f8; border-left: 4px solid #17a2b8;
+            padding: 15px; margin: 15px 0; border-radius: 5px;
+        }
+        .btn {
+            display: inline-block; padding: 12px 24px;
+            background: #667eea; color: white; text-decoration: none;
+            border-radius: 6px; margin: 10px 5px;
+        }
+        .btn:hover { background: #764ba2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Dynamic Array</h1>
+            <p>By Amir Charkhi | AI Tech Institute</p>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2>🎯 Purpose</h2>
+                <p>Master the dynamic array problem that combines array manipulation with bitwise XOR operations. This challenge teaches you how to handle dynamic data structures, understand query-based problems, and work with modular arithmetic.</p>
+            </div>
+            <div class="section">
+                <h2>📋 Problem Statement</h2>
+                <p>Implement a dynamic array that supports two types of queries:</p>
+                <ol>
+                    <li><strong>Query type 1:</strong> Append integer <code>y</code> to the sequence at index <code>idx = (x ^ lastAnswer) % n</code></li>
+                    <li><strong>Query type 2:</strong> Find the value at index <code>y % size(arr[idx])</code> in sequence at <code>idx = (x ^ lastAnswer) % n</code>, assign it to <code>lastAnswer</code>, and append it to the answer array</li>
+                </ol>
+            </div>
+            <div class="section">
+                <h2>💡 Understanding XOR Operations</h2>
+                <p>XOR (^) is a bitwise operation that returns 1 when bits differ, 0 when same.</p>
+                <div class="example">
+                    <strong>Example:</strong> <code>5 ^ 3 = 6</code><br>
+                    Binary: 101 ^ 011 = 110 (which is 6 in decimal)
+                </div>
+            </div>
+            <div class="section">
+                <h2>💡 Solution</h2>
+                <div class="code-block">
+<span class="keyword">def</span> <span class="function">dynamicArray</span>(n, queries):
+    arr = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(n)]
+    lastAnswer = <span class="string">0</span>
+    answers = []
+    
+    <span class="keyword">for</span> query <span class="keyword">in</span> queries:
+        query_type, x, y = query[<span class="string">0</span>], query[<span class="string">1</span>], query[<span class="string">2</span>]
+        idx = (x ^ lastAnswer) % n
+        
+        <span class="keyword">if</span> query_type == <span class="string">1</span>:
+            arr[idx].append(y)
+        <span class="keyword">else</span>:
+            lastAnswer = arr[idx][y % <span class="function">len</span>(arr[idx])]
+            answers.append(lastAnswer)
+    
+    <span class="keyword">return</span> answers
+                </div>
+            </div>
+            <div class="section">
+                <h2>🔗 Resources</h2>
+                <a href="https://www.hackerrank.com/challenges/dynamic-array/problem?isFullScreen=true" class="btn" target="_blank">Solve on HackerRank</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

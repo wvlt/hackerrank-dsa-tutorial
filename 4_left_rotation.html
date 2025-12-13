@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Left Rotation | HackerRank DSA Tutorial</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6; color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px; margin: 0 auto; background: white;
+            border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 40px; text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .content { padding: 40px; }
+        .section { margin-bottom: 40px; }
+        .section h2 {
+            color: #667eea; font-size: 1.8em; margin-bottom: 15px;
+            padding-bottom: 10px; border-bottom: 3px solid #667eea;
+        }
+        .code-block {
+            background: #2d2d2d; color: #f8f8f2; padding: 20px;
+            border-radius: 8px; overflow-x: auto; margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .code-block .comment { color: #75715e; }
+        .code-block .keyword { color: #f92672; }
+        .code-block .function { color: #a6e22e; }
+        .example {
+            background: #e8f4f8; border-left: 4px solid #17a2b8;
+            padding: 15px; margin: 15px 0; border-radius: 5px;
+        }
+        .btn {
+            display: inline-block; padding: 12px 24px;
+            background: #667eea; color: white; text-decoration: none;
+            border-radius: 6px; margin: 10px 5px;
+        }
+        .btn:hover { background: #764ba2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Left Rotation</h1>
+            <p>By Amir Charkhi | AI Tech Institute</p>
+        </div>
+        <div class="content">
+            <div class="section">
+                <h2>🎯 Purpose</h2>
+                <p>Master array rotation - a fundamental operation that appears frequently in coding interviews. This problem teaches you multiple approaches to rotate arrays and understand time-space tradeoffs.</p>
+            </div>
+            <div class="section">
+                <h2>📋 Problem Statement</h2>
+                <p>Given an array of integers and a number <code>d</code>, perform a left rotation. A left rotation operation moves each array element one position to the left, with the first element moving to the end.</p>
+                <div class="example">
+                    <strong>Example:</strong><br>
+                    Array: <code>[1, 2, 3, 4, 5]</code><br>
+                    Rotations: <code>d = 4</code><br>
+                    Result: <code>[5, 1, 2, 3, 4]</code>
+                </div>
+            </div>
+            <div class="section">
+                <h2>💡 Solution Approach 1: Array Slicing</h2>
+                <div class="code-block">
+<span class="keyword">def</span> <span class="function">rotateLeft</span>(d, arr):
+    <span class="comment"># Take elements from index d to end, then from start to d</span>
+    <span class="keyword">return</span> arr[d:] + arr[:d]
+                </div>
+                <p><strong>Time:</strong> O(n) | <strong>Space:</strong> O(n)</p>
+            </div>
+            <div class="section">
+                <h2>💡 Solution Approach 2: One-by-One Rotation</h2>
+                <div class="code-block">
+<span class="keyword">def</span> <span class="function">rotateLeft</span>(d, arr):
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(d):
+        first = arr.pop(<span class="string">0</span>)
+        arr.append(first)
+    <span class="keyword">return</span> arr
+                </div>
+                <p><strong>Time:</strong> O(n × d) | <strong>Space:</strong> O(1)</p>
+            </div>
+            <div class="section">
+                <h2>🔗 Resources</h2>
+                <a href="https://www.hackerrank.com/challenges/array-left-rotation/problem?isFullScreen=true" class="btn" target="_blank">Solve on HackerRank</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

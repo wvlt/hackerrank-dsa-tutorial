@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array DS - Reverse an Array | Interactive Tutorial</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .progress-container {
+            background: #0d0d1a; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px;
+        }
+        .progress-label {
+            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem;
+        }
+        .progress-bar {
+            height: 8px; background: #2d2d44; border-radius: 4px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 4px; transition: width 0.5s ease;
+        }
+        .phase-dots {
+            display: flex; justify-content: center; gap: 8px; margin-top: 10px;
+        }
+        .phase-dot {
+            width: 10px; height: 10px; border-radius: 50%; background: #2d2d44; transition: all 0.3s;
+        }
+        .phase-dot.active { background: #00d9ff; box-shadow: 0 0 10px #00d9ff; }
+        .phase-dot.complete { background: #00ff88; }
+        .content-area {
+            background: #0d0d1a; border-radius: 16px; padding: 30px;
+            min-height: 450px; border: 1px solid #2d2d44; margin-bottom: 20px;
+        }
+        .phase-title {
+            color: #00d9ff; font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .main-title {
+            font-size: 1.6rem; margin-bottom: 20px; line-height: 1.3;
+        }
+        .story-text {
+            font-size: 1.1rem; line-height: 1.8; color: #ccc; margin-bottom: 25px;
+        }
+        .story-text .highlight { color: #00d9ff; font-weight: 600; }
+        .story-text .highlight-green { color: #00ff88; font-weight: 600; }
+        .demo-area {
+            background: #151528; border-radius: 12px; padding: 25px; margin: 20px 0; min-height: 200px;
+        }
+        .array-visual {
+            display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+        }
+        .array-element {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2); color: white;
+            padding: 15px 20px; border-radius: 8px; font-weight: bold; font-size: 1.2em;
+            min-width: 50px; text-align: center; transition: all 0.3s;
+        }
+        .array-element.swapping {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            transform: scale(1.2);
+        }
+        .arrow { font-size: 2em; color: #00d9ff; margin: 0 10px; }
+        .pointer { color: #e74c3c; font-weight: bold; }
+        .code-reveal {
+            background: #0a0a12; border-radius: 10px; padding: 20px;
+            font-family: 'Fira Code', monospace; font-size: 0.9rem; margin-top: 20px;
+            border: 1px solid #2d2d44;
+        }
+        .code-line {
+            padding: 4px 0; opacity: 0.3; transition: opacity 0.5s;
+        }
+        .code-line.revealed { opacity: 1; }
+        .code-line.highlighted {
+            background: rgba(0, 217, 255, 0.15); border-left: 3px solid #00d9ff;
+            padding-left: 10px; margin-left: -10px;
+        }
+        .keyword { color: #c792ea; }
+        .variable { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; }
+        .insight-box {
+            background: linear-gradient(135deg, #00594f, #007a6c);
+            border-radius: 10px; padding: 20px; margin: 20px 0;
+            display: flex; gap: 15px; align-items: flex-start;
+        }
+        .insight-icon { font-size: 1.5rem; }
+        .insight-text { line-height: 1.6; }
+        .nav-buttons {
+            display: flex; justify-content: space-between; gap: 15px;
+        }
+        .nav-btn {
+            padding: 14px 30px; border: none; border-radius: 10px;
+            cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s;
+        }
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e; flex: 1;
+        }
+        .nav-btn.primary:hover {
+            transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+        .nav-btn.secondary {
+            background: #2d2d44; color: #fff;
+        }
+        .nav-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; transform: none;
+        }
+        .comparison-box {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0;
+        }
+        .comparison-card {
+            background: #151528; padding: 20px; border-radius: 8px; border: 2px solid #2d2d44;
+        }
+        .comparison-card h4 {
+            color: #00d9ff; margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-label">
+                <span id="phaseLabel">Phase 1: Understanding the Problem</span>
+                <span id="stepCount">Step 1 of 15</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 7%"></div>
+            </div>
+            <div class="phase-dots">
+                <div class="phase-dot active" title="Understanding"></div>
+                <div class="phase-dot" title="Approach 1"></div>
+                <div class="phase-dot" title="Approach 2"></div>
+                <div class="phase-dot" title="Code"></div>
+                <div class="phase-dot" title="Mastery"></div>
+            </div>
+        </div>
+        
+        <div class="content-area" id="contentArea"></div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn secondary" id="backBtn" onclick="prevStep()" disabled>← Back</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextStep()">Continue →</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 0;
+        const steps = [
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding the Problem</div>
+                    <h1 class="main-title">🔄 What Does "Reverse an Array" Mean?</h1>
+                    <p class="story-text">
+                        Imagine you have a row of numbered boxes: <span class="highlight">[1, 4, 3, 2]</span>
+                    </p>
+                    <p class="story-text">
+                        Reversing means flipping them around so the first becomes last and last becomes first.
+                    </p>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #888; margin-bottom: 10px;">Original Array:</div>
+                                <div class="array-visual">
+                                    <div class="array-element">1</div>
+                                    <div class="array-element">4</div>
+                                    <div class="array-element">3</div>
+                                    <div class="array-element">2</div>
+                                </div>
+                            </div>
+                            <div style="font-size: 2rem; margin: 15px 0;">⬇️</div>
+                            <div>
+                                <div style="color: #00ff88; margin-bottom: 10px;">Reversed Array:</div>
+                                <div class="array-visual">
+                                    <div class="array-element">2</div>
+                                    <div class="array-element">3</div>
+                                    <div class="array-element">4</div>
+                                    <div class="array-element">1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            Notice: The <strong>first</strong> element (1) is now <strong>last</strong>, and the <strong>last</strong> element (2) is now <strong>first</strong>. Everything in between is flipped too!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding the Problem</div>
+                    <h1 class="main-title">🎯 Why This Matters</h1>
+                    <p class="story-text">
+                        Array reversal appears in <span class="highlight">countless coding interviews</span> and real-world problems:
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00d9ff;">Interview Questions:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">• Reverse a string</div>
+                                <div style="color: #aaa;">• Reverse words in a sentence</div>
+                                <div style="color: #aaa;">• Palindrome checking</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">Real Applications:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">• Undo/redo functionality</div>
+                                <div style="color: #aaa;">• Displaying data in reverse order</div>
+                                <div style="color: #aaa;">• Algorithm building blocks</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="story-text">
+                        Mastering this fundamental operation builds the foundation for more complex problems!
+                    </p>
+                `
+            },
+            {
+                phase: 2, phaseName: "Approach 1",
+                content: `
+                    <div class="phase-title">Phase 2: Approach 1 - Python Slicing</div>
+                    <h1 class="main-title">🐍 The Pythonic Way</h1>
+                    <p class="story-text">
+                        Python has a built-in feature that makes reversing <span class="highlight">incredibly simple</span>:
+                    </p>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line revealed highlighted">
+                                <span class="keyword">def</span> <span class="variable">reverseArray</span>(arr):
+                            </div>
+                            <div class="code-line revealed highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> arr[::<span class="string">-1</span>]
+                            </div>
+                        </div>
+                    </div>
+                    <p class="story-text">
+                        That's it! Just <span class="highlight-green">three characters</span>: <code>[::-1]</code>
+                    </p>
+                    <div class="insight-box">
+                        <div class="insight-icon">📚</div>
+                        <div class="insight-text">
+                            <strong>How it works:</strong> The <code>[::-1]</code> syntax means "start at the end, go backwards, step by -1". Python handles all the complexity for you!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "Approach 1",
+                content: `
+                    <div class="phase-title">Phase 2: Approach 1 - Python Slicing</div>
+                    <h1 class="main-title">⚖️ Trade-offs</h1>
+                    <p class="story-text">
+                        Let's understand the <span class="highlight">time and space complexity</span>:
+                    </p>
+                    <div class="comparison-box">
+                        <div class="comparison-card">
+                            <h4>⏱️ Time Complexity</h4>
+                            <div style="color: #00ff88; font-size: 1.5rem; margin: 10px 0;">O(n)</div>
+                            <p style="color: #aaa; font-size: 0.9rem;">Must copy all n elements</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>💾 Space Complexity</h4>
+                            <div style="color: #ffd700; font-size: 1.5rem; margin: 10px 0;">O(n)</div>
+                            <p style="color: #aaa; font-size: 0.9rem;">Creates a new array</p>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">✅</div>
+                        <div class="insight-text">
+                            <strong>Best for:</strong> When you need a new reversed array and want clean, readable code. Perfect for Python interviews when simplicity matters!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Approach 2",
+                content: `
+                    <div class="phase-title">Phase 3: Approach 2 - Two-Pointer Technique</div>
+                    <h1 class="main-title">🎯 The Interview Favorite</h1>
+                    <p class="story-text">
+                        While slicing is elegant, interviewers often want to see the <span class="highlight">algorithmic approach</span>:
+                    </p>
+                    <p class="story-text">
+                        The <span class="highlight-green">two-pointer technique</span> uses two pointers starting from both ends, swapping elements until they meet.
+                    </p>
+                    <div class="demo-area" id="swapDemo">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="color: #888; margin-bottom: 10px;">Step 1: Initialize pointers</div>
+                            <div class="array-visual">
+                                <div class="array-element" style="background: #e74c3c;">1 <span style="font-size: 0.7em; display: block;">left</span></div>
+                                <div class="array-element">4</div>
+                                <div class="array-element">3</div>
+                                <div class="array-element" style="background: #e74c3c;">2 <span style="font-size: 0.7em; display: block;">right</span></div>
+                            </div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: #00ff88; margin-bottom: 10px;">Step 2: Swap and move pointers</div>
+                            <div class="array-visual">
+                                <div class="array-element" style="background: #e74c3c;">2 <span style="font-size: 0.7em; display: block;">left</span></div>
+                                <div class="array-element">4</div>
+                                <div class="array-element" style="background: #e74c3c;">3 <span style="font-size: 0.7em; display: block;">right</span></div>
+                                <div class="array-element">1</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Approach 2",
+                content: `
+                    <div class="phase-title">Phase 3: Approach 2 - Two-Pointer Technique</div>
+                    <h1 class="main-title">🔄 Visual Walkthrough</h1>
+                    <p class="story-text">
+                        Let's trace through <span class="highlight">[1, 4, 3, 2]</span> step by step:
+                    </p>
+                    <div class="demo-area">
+                        <div id="walkthroughSteps">
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #00d9ff; margin-bottom: 10px;"><strong>Initial:</strong> left=0, right=3</div>
+                                <div class="array-visual">
+                                    <div class="array-element" style="background: #e74c3c;">1</div>
+                                    <div class="array-element">4</div>
+                                    <div class="array-element">3</div>
+                                    <div class="array-element" style="background: #e74c3c;">2</div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #00ff88; margin-bottom: 10px;"><strong>Swap 1↔2:</strong> left=1, right=2</div>
+                                <div class="array-visual">
+                                    <div class="array-element">2</div>
+                                    <div class="array-element" style="background: #e74c3c;">4</div>
+                                    <div class="array-element" style="background: #e74c3c;">3</div>
+                                    <div class="array-element">1</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="color: #ffd700; margin-bottom: 10px;"><strong>Swap 4↔3:</strong> left=2, right=1 (STOP - left >= right)</div>
+                                <div class="array-visual">
+                                    <div class="array-element">2</div>
+                                    <div class="array-element">3</div>
+                                    <div class="array-element">4</div>
+                                    <div class="array-element">1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🎯</div>
+                        <div class="insight-text">
+                            <strong>Key insight:</strong> We stop when <code>left >= right</code>. This handles both even and odd-length arrays correctly!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Approach 2",
+                content: `
+                    <div class="phase-title">Phase 3: Approach 2 - Two-Pointer Technique</div>
+                    <h1 class="main-title">⚖️ Why This Approach?</h1>
+                    <div class="comparison-box">
+                        <div class="comparison-card">
+                            <h4>⏱️ Time Complexity</h4>
+                            <div style="color: #00ff88; font-size: 1.5rem; margin: 10px 0;">O(n)</div>
+                            <p style="color: #aaa; font-size: 0.9rem;">Visits each element once</p>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>💾 Space Complexity</h4>
+                            <div style="color: #00ff88; font-size: 1.5rem; margin: 10px 0;">O(1)</div>
+                            <p style="color: #aaa; font-size: 0.9rem;">Only uses constant space!</p>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🏆</div>
+                        <div class="insight-text">
+                            <strong>Best for:</strong> When you need in-place modification or want to demonstrate strong algorithmic thinking. This is what interviewers love to see!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">💻 Approach 1: Python Slicing</h1>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line revealed">
+                                <span class="keyword">def</span> <span class="variable">reverseArray</span>(arr):
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Pythonic one-liner</span>
+                            </div>
+                            <div class="code-line revealed highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> arr[::<span class="string">-1</span>]
+                            </div>
+                        </div>
+                    </div>
+                    <p class="story-text">
+                        That's it! Clean, simple, and Pythonic. Perfect for when you want readability.
+                    </p>
+                `
+            },
+            {
+                phase: 4, phaseName: "Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">💻 Approach 2: Two-Pointer</h1>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line revealed">
+                                <span class="keyword">def</span> <span class="variable">reverseArray</span>(arr):
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;left = <span class="string">0</span>
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;right = <span class="variable">len</span>(arr) - <span class="string">1</span>
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line revealed highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">while</span> left < right:
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arr[left], arr[right] = arr[right], arr[left]
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;left += <span class="string">1</span>
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;right -= <span class="string">1</span>
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line revealed">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> arr
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">⚠️</div>
+                        <div class="insight-text">
+                            <strong>Critical detail:</strong> Use <code>while left < right</code>, not <code>while left != right</code>. The <code><</code> condition correctly handles even-length arrays!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">🔍 Line-by-Line Breakdown</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00d9ff;">Line 1-2:</strong> Initialize pointers
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">
+                                    left starts at 0 (beginning), right starts at len(arr)-1 (end)
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">Line 4:</strong> Loop condition
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">
+                                    Continue while left < right (they haven't met or crossed)
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ffd700;">Line 5:</strong> Swap elements
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">
+                                    Python's tuple unpacking: arr[left], arr[right] = arr[right], arr[left]
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ff6b6b;">Line 6-7:</strong> Move pointers
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">
+                                    left moves right, right moves left (toward center)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">🎯 When to Use Each Approach</h1>
+                    <div class="comparison-box">
+                        <div class="comparison-card">
+                            <h4>🐍 Python Slicing</h4>
+                            <div style="color: #aaa; margin-top: 10px;">
+                                <div style="margin-bottom: 8px;">✅ Clean and readable</div>
+                                <div style="margin-bottom: 8px;">✅ One line of code</div>
+                                <div style="margin-bottom: 8px;">❌ Creates new array (O(n) space)</div>
+                                <div style="margin-bottom: 8px;">❌ Not in-place</div>
+                            </div>
+                            <div style="color: #00ff88; margin-top: 15px;">
+                                <strong>Use when:</strong> You need a new reversed array and want simplicity
+                            </div>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>🎯 Two-Pointer</h4>
+                            <div style="color: #aaa; margin-top: 10px;">
+                                <div style="margin-bottom: 8px;">✅ O(1) space complexity</div>
+                                <div style="margin-bottom: 8px;">✅ In-place modification</div>
+                                <div style="margin-bottom: 8px;">✅ Shows algorithmic thinking</div>
+                                <div style="margin-bottom: 8px;">❌ More code to write</div>
+                            </div>
+                            <div style="color: #00ff88; margin-top: 15px;">
+                                <strong>Use when:</strong> You need in-place modification or want to impress in interviews
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⚠️ Common Pitfalls</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Wrong Loop Condition</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Using <code>while left != right</code> fails for even-length arrays. Use <code>while left < right</code>!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Modifying Original Array</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    If you need to preserve the original, make a copy first: <code>arr.copy()</code>
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Off-by-One Errors</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Remember: right starts at <code>len(arr) - 1</code>, not <code>len(arr)</code>!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">📚 Practice Recommendations</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00d9ff;">1. Try Both Approaches</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Implement both slicing and two-pointer. Compare their performance and readability.
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">2. Edge Cases</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Test with: empty array [], single element [5], already reversed [5,4,3,2,1]
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ffd700;">3. Variations</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Try: reverse only part of array, reverse words in string, check if palindrome
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ff6b6b;">4. Other Languages</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Think about how you'd implement this in Java or C++ (no slicing available!)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Complete!</div>
+                    <div style="text-align: center; padding: 30px;">
+                        <div style="font-size: 4rem; margin-bottom: 15px;">🎉</div>
+                        <h2 style="color: #00ff88; margin-bottom: 15px;">You've Mastered Array Reversal!</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 25px; color: #ccc;">
+                            You now understand two powerful approaches to reversing arrays.
+                        </p>
+                    </div>
+                    <div class="demo-area">
+                        <h3 style="color: #00d9ff; margin-bottom: 15px; text-align: center;">🧠 Key Takeaways</h3>
+                        <div style="display: grid; gap: 10px;">
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Python slicing is elegant but creates a new array
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Two-pointer technique is space-efficient (O(1))
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Both have O(n) time complexity
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Choose based on your needs: simplicity vs space efficiency
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box" style="margin-top: 20px;">
+                        <div class="insight-icon">🚀</div>
+                        <div class="insight-text">
+                            <strong>Next challenge:</strong> Try solving this on HackerRank! Practice makes perfect. You've got this! 💪
+                        </div>
+                    </div>
+                `
+            }
+        ];
+        
+        function updateProgress() {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepCount').textContent = `Step ${currentStep + 1} of ${steps.length}`;
+            
+            const step = steps[currentStep];
+            document.getElementById('phaseLabel').textContent = `Phase ${step.phase}: ${step.phaseName}`;
+            
+            document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'complete');
+                if (i + 1 < step.phase) {
+                    dot.classList.add('complete');
+                } else if (i + 1 === step.phase) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        function renderStep() {
+            document.getElementById('contentArea').innerHTML = steps[currentStep].content;
+            document.getElementById('backBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').textContent = currentStep === steps.length - 1 ? '🎉 Finish!' : 'Continue →';
+            updateProgress();
+        }
+        
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        renderStep();
+    </script>
+</body>
+</html>
