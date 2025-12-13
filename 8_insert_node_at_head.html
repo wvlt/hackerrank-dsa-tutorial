@@ -3,86 +3,588 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert Node at Head | HackerRank DSA Tutorial</title>
+    <title>Insert Node at Head | Interactive Tutorial | AI Tech Institute</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6; color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh; color: #fff;
         }
-        .container {
-            max-width: 900px; margin: 0 auto; background: white;
-            border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        .brand-header {
+            background: #0d0d1a; padding: 20px; text-align: center; border-bottom: 2px solid #2d2d44;
         }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 40px; text-align: center;
+        .brand-header h1 { color: #00d9ff; font-size: 1.5rem; margin-bottom: 10px; }
+        .brand-links {
+            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px;
         }
-        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .content { padding: 40px; }
-        .section { margin-bottom: 40px; }
-        .section h2 {
-            color: #667eea; font-size: 1.8em; margin-bottom: 15px;
-            padding-bottom: 10px; border-bottom: 3px solid #667eea;
+        .brand-link {
+            color: #00d9ff; text-decoration: none; padding: 5px 10px; border: 1px solid #00d9ff;
+            border-radius: 5px; transition: all 0.3s; font-size: 0.9rem;
         }
-        .code-block {
-            background: #2d2d2d; color: #f8f8f2; padding: 20px;
-            border-radius: 8px; overflow-x: auto; margin: 15px 0;
-            font-family: 'Courier New', monospace;
+        .brand-link:hover { background: #00d9ff; color: #1a1a2e; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .progress-container {
+            background: #0d0d1a; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px;
         }
-        .code-block .comment { color: #75715e; }
-        .code-block .keyword { color: #f92672; }
-        .code-block .function { color: #a6e22e; }
-        .example {
-            background: #e8f4f8; border-left: 4px solid #17a2b8;
-            padding: 15px; margin: 15px 0; border-radius: 5px;
+        .progress-label {
+            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem;
         }
-        .btn {
-            display: inline-block; padding: 12px 24px;
-            background: #667eea; color: white; text-decoration: none;
-            border-radius: 6px; margin: 10px 5px;
+        .progress-bar {
+            height: 8px; background: #2d2d44; border-radius: 4px; overflow: hidden;
         }
-        .btn:hover { background: #764ba2; }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 4px; transition: width 0.5s ease;
+        }
+        .phase-dots {
+            display: flex; justify-content: center; gap: 8px; margin-top: 10px;
+        }
+        .phase-dot {
+            width: 10px; height: 10px; border-radius: 50%; background: #2d2d44; transition: all 0.3s;
+        }
+        .phase-dot.active { background: #00d9ff; box-shadow: 0 0 10px #00d9ff; }
+        .phase-dot.complete { background: #00ff88; }
+        .content-area {
+            background: #0d0d1a; border-radius: 16px; padding: 30px;
+            min-height: 450px; border: 1px solid #2d2d44; margin-bottom: 20px;
+        }
+        .phase-title {
+            color: #00d9ff; font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .main-title {
+            font-size: 1.6rem; margin-bottom: 20px; line-height: 1.3;
+        }
+        .story-text {
+            font-size: 1.1rem; line-height: 1.8; color: #ccc; margin-bottom: 25px;
+        }
+        .story-text .highlight { color: #00d9ff; font-weight: 600; }
+        .story-text .highlight-green { color: #00ff88; font-weight: 600; }
+        .demo-area {
+            background: #151528; border-radius: 12px; padding: 25px; margin: 20px 0; min-height: 200px;
+        }
+        .node-visual {
+            display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap;
+        }
+        .node-box {
+            display: flex; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .node-data {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2); padding: 20px 25px;
+            font-size: 1.3rem; font-weight: bold; color: white;
+        }
+        .node-data.new {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        .node-next {
+            background: #2d2d44; padding: 20px 15px; font-size: 0.75rem;
+            color: #ffd700; display: flex; align-items: center;
+        }
+        .null-box {
+            background: #1a1a2e; border: 2px dashed #444; padding: 20px 25px;
+            border-radius: 8px; color: #666; font-size: 0.9rem;
+        }
+        .code-reveal {
+            background: #0a0a12; border-radius: 10px; padding: 20px;
+            font-family: 'Fira Code', monospace; font-size: 0.9rem; margin-top: 20px;
+            border: 1px solid #2d2d44;
+        }
+        .code-line {
+            padding: 4px 0; opacity: 1;
+        }
+        .code-line.highlighted {
+            background: rgba(0, 217, 255, 0.15); border-left: 3px solid #00d9ff;
+            padding-left: 10px; margin-left: -10px;
+        }
+        .keyword { color: #c792ea; }
+        .variable { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; }
+        .insight-box {
+            background: linear-gradient(135deg, #00594f, #007a6c);
+            border-radius: 10px; padding: 20px; margin: 20px 0;
+            display: flex; gap: 15px; align-items: flex-start;
+        }
+        .insight-icon { font-size: 1.5rem; }
+        .insight-text { line-height: 1.6; }
+        .nav-buttons {
+            display: flex; justify-content: space-between; gap: 15px;
+        }
+        .nav-btn {
+            padding: 14px 30px; border: none; border-radius: 10px;
+            cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s;
+        }
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e; flex: 1;
+        }
+        .nav-btn.primary:hover {
+            transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+        .nav-btn.secondary {
+            background: #2d2d44; color: #fff;
+        }
+        .nav-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; transform: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📚 Insert Node at Head</h1>
-            <p>By Amir Charkhi | AI Tech Institute</p>
-        </div>
-        <div class="content">
-            <div class="section">
-                <h2>🎯 Purpose</h2>
-                <p>Master inserting nodes at the head of a linked list - a constant time O(1) operation that's simpler than tail insertion.</p>
-            </div>
-            <div class="section">
-                <h2>📋 Problem Statement</h2>
-                <p>Given the pointer to the head node and an integer data, create a new node and insert it at the head.</p>
-                <div class="example">
-                    <strong>Example:</strong><br>
-                    Head: <code>16 -> 13 -> NULL</code>, data: <code>15</code><br>
-                    Result: <code>15 -> 16 -> 13 -> NULL</code>
-                </div>
-            </div>
-            <div class="section">
-                <h2>💡 Solution</h2>
-                <div class="code-block">
-<span class="keyword">def</span> <span class="function">insertNodeAtHead</span>(llist, data):
-    new_node = <span class="function">SinglyLinkedListNode</span>(data)
-    new_node.next = llist
-    <span class="keyword">return</span> new_node
-                </div>
-                <p><strong>Time:</strong> O(1) - Constant time! | <strong>Space:</strong> O(1)</p>
-            </div>
-            <div class="section">
-                <h2>🔗 Resources</h2>
-                <a href="https://www.hackerrank.com/challenges/insert-a-node-at-the-head-of-a-linked-list/problem?isFullScreen=true" class="btn" target="_blank">Solve on HackerRank</a>
-            </div>
+    <div class="brand-header">
+        <h1>🚀 AI Tech Institute | Amir Charkhi</h1>
+        <div class="brand-links">
+            <a href="https://www.youtube.com/@AmirCharkhi" class="brand-link" target="_blank">📺 YouTube</a>
+            <a href="https://github.com/wvlt/hackerrank-dsa-tutorial" class="brand-link" target="_blank">💻 GitHub</a>
+            <a href="https://www.linkedin.com/in/amircharkhi" class="brand-link" target="_blank">💼 LinkedIn</a>
+            <a href="https://www.hackerrank.com/challenges/insert-a-node-at-the-head-of-a-linked-list/problem?isFullScreen=true" class="brand-link" target="_blank">🎯 Problem</a>
         </div>
     </div>
+    
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-label">
+                <span id="phaseLabel">Phase 1: Understanding Head Insertion</span>
+                <span id="stepCount">Step 1 of 15</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 7%"></div>
+            </div>
+            <div class="phase-dots">
+                <div class="phase-dot active" title="Understanding"></div>
+                <div class="phase-dot" title="The Challenge"></div>
+                <div class="phase-dot" title="The Algorithm"></div>
+                <div class="phase-dot" title="The Code"></div>
+                <div class="phase-dot" title="Mastery"></div>
+            </div>
+        </div>
+        
+        <div class="content-area" id="contentArea"></div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn secondary" id="backBtn" onclick="prevStep()" disabled>← Back</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextStep()">Continue →</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 0;
+        const steps = [
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding Head Insertion</div>
+                    <h1 class="main-title">🔝 What is Head Insertion?</h1>
+                    <p class="story-text">
+                        Insert a new node at the <span class="highlight">beginning</span> of the linked list. This makes it the new HEAD!
+                    </p>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="margin-bottom: 20px;">
+                                <div style="color: #888; margin-bottom: 10px;">Before: 16 → 13 → NULL</div>
+                                <div class="node-visual">
+                                    <div style="text-align: center;">
+                                        <div style="color: #ff6b6b; font-size: 0.8rem; margin-bottom: 5px;">HEAD</div>
+                                        <div class="node-box">
+                                            <div class="node-data">16</div>
+                                            <div class="node-next">next →</div>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 1.5rem; color: #00d9ff;">→</span>
+                                    <div class="node-box">
+                                        <div class="node-data">13</div>
+                                        <div class="node-next">next →</div>
+                                    </div>
+                                    <span style="font-size: 1.5rem; color: #00d9ff;">→</span>
+                                    <div class="null-box">NULL</div>
+                                </div>
+                            </div>
+                            <div style="font-size: 2rem; margin: 15px 0;">⬇️ Insert 15 at head</div>
+                            <div>
+                                <div style="color: #00ff88; margin-bottom: 10px;">After: 15 → 16 → 13 → NULL</div>
+                                <div class="node-visual">
+                                    <div style="text-align: center;">
+                                        <div style="color: #ff6b6b; font-size: 0.8rem; margin-bottom: 5px;">NEW HEAD</div>
+                                        <div class="node-box">
+                                            <div class="node-data new">15</div>
+                                            <div class="node-next">next →</div>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 1.5rem; color: #00d9ff;">→</span>
+                                    <div class="node-box">
+                                        <div class="node-data">16</div>
+                                        <div class="node-next">next →</div>
+                                    </div>
+                                    <span style="font-size: 1.5rem; color: #00d9ff;">→</span>
+                                    <div class="node-box">
+                                        <div class="node-data">13</div>
+                                        <div class="node-next">next →</div>
+                                    </div>
+                                    <span style="font-size: 1.5rem; color: #00d9ff;">→</span>
+                                    <div class="null-box">NULL</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            Notice: The new node (15) becomes the HEAD, and it points to the old head (16). The old list becomes the rest of the new list!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding Head Insertion</div>
+                    <h1 class="main-title">⚡ Why Head Insertion is Faster</h1>
+                    <p class="story-text">
+                        Unlike tail insertion, head insertion is <span class="highlight-green">O(1)</span> - no traversal needed!
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🔝</div>
+                                <div style="color: #00ff88; font-size: 1.5rem; margin-bottom: 5px;">Head: O(1)</div>
+                                <div style="color: #aaa; font-size: 0.9rem;">Just update pointers!</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🔚</div>
+                                <div style="color: #ffd700; font-size: 1.5rem; margin-bottom: 5px;">Tail: O(n)</div>
+                                <div style="color: #aaa; font-size: 0.9rem;">Must walk entire list</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #00594f; border-radius: 8px; text-align: center;">
+                            <strong style="color: #00ff88;">Head insertion is much faster!</strong> Perfect when order doesn't matter or you want LIFO (stack) behavior.
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "The Challenge",
+                content: `
+                    <div class="phase-title">Phase 2: The Challenge</div>
+                    <h1 class="main-title">🎯 What We Need to Do</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00d9ff;">
+                                <strong style="color: #00d9ff;">Step 1:</strong> Create new node with given data
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ffd700;">
+                                <strong style="color: #ffd700;">Step 2:</strong> Link new node to current head
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">new_node.next = current_head</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                                <strong style="color: #00ff88;">Step 3:</strong> Return new node as new head
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">The new node IS the new head!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🔑</div>
+                        <div class="insight-text">
+                            <strong>Key insight:</strong> This works even if the list is empty (head is None)! If head is None, new_node.next = None, which is perfect for an empty list.
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "The Challenge",
+                content: `
+                    <div class="phase-title">Phase 2: The Challenge</div>
+                    <h1 class="main-title">🔄 Visualizing the Process</h1>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="display: grid; gap: 15px;">
+                                <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                    <div style="color: #888; margin-bottom: 10px;">Original: 16 → 13 → NULL</div>
+                                    <div style="color: #00d9ff;">Insert 15 at head</div>
+                                </div>
+                                <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                    <div style="color: #ffd700; margin-bottom: 5px;">1. Create: new_node (data=15)</div>
+                                    <div style="color: #ffd700; margin-bottom: 5px;">2. Link: new_node.next = head (16)</div>
+                                    <div style="color: #00ff88;">3. Return: new_node (15) ← NEW HEAD</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            Notice: We <strong>always return the new node</strong> as the new head. This is different from tail insertion where we return the original head!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Algorithm",
+                content: `
+                    <div class="phase-title">Phase 3: The Algorithm</div>
+                    <h1 class="main-title">📋 Simple Two-Step Process</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00d9ff;">
+                                <strong style="color: #00d9ff;">Step 1:</strong> Create new node
+                                <div style="color: #aaa; margin-top: 5px; font-family: monospace;">new_node = SinglyLinkedListNode(data)</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ffd700;">
+                                <strong style="color: #ffd700;">Step 2:</strong> Link and return
+                                <div style="color: #aaa; margin-top: 5px; font-family: monospace;">new_node.next = current_head<br>return new_node</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #00594f; border-radius: 8px; text-align: center;">
+                            <strong style="color: #00ff88;">That's it!</strong> No traversal, no loops - just two steps. That's why it's O(1)!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Algorithm",
+                content: `
+                    <div class="phase-title">Phase 3: The Algorithm</div>
+                    <h1 class="main-title">🎭 Edge Case: Empty List</h1>
+                    <p class="story-text">
+                        What happens if the list is empty (head is None)?
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00d9ff;">Initial:</strong> head = None (empty list)
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ffd700;">Create:</strong> new_node (data=15)
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">Link:</strong> new_node.next = None ✓
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ff6b6b;">Return:</strong> new_node (15) - this IS the new head!
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #00594f; border-radius: 8px;">
+                            <strong style="color: #00ff88;">Perfect!</strong> Our code handles empty lists automatically - no special case needed!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">💻 Complete Solution</h1>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line highlighted">
+                                <span class="keyword">def</span> <span class="variable">insertNodeAtHead</span>(llist, data):
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Step 1: Create new node</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;new_node = <span class="variable">SinglyLinkedListNode</span>(data)
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Step 2: Link to current head (works even if None)</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;new_node.next = llist
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Step 3: Return new node as new head</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> new_node
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">✅</div>
+                        <div class="insight-text">
+                            Notice how simple this is! Only <strong>3 lines of logic</strong>. Compare this to tail insertion which requires traversal - head insertion is much cleaner!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">🔄 Why Return New Node?</h1>
+                    <p class="story-text">
+                        We <span class="highlight">always return the new node</span> as the new head - even if list was empty!
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00d9ff;">Empty List:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">Before: head = None<br>After: head = new_node (the new node IS the list!)</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">Non-Empty List:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">Before: head = 16<br>After: head = new_node (15), which points to 16</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            <strong>Remember:</strong> The caller must update their head pointer: <code>head = insertNodeAtHead(head, data)</code>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⚖️ Head vs Tail Insertion</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                                <strong style="color: #00ff88;">Head Insertion</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Time: O(1) ⚡<br>
+                                    Space: O(1)<br>
+                                    No traversal needed!
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ffd700;">
+                                <strong style="color: #ffd700;">Tail Insertion</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Time: O(n) 🐢<br>
+                                    Space: O(1)<br>
+                                    Must traverse to end
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🚀</div>
+                        <div class="insight-text">
+                            Head insertion is <strong>much faster</strong> - that's why stacks (which use head insertion) are faster than queues (which use tail insertion)!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⚠️ Common Pitfalls</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Not Returning New Node</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Must return new_node - it IS the new head!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Wrong Linking Order</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Set <code>new_node.next = llist</code> BEFORE returning, not after!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Forgetting to Update Head</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Caller must update: <code>head = insertNodeAtHead(head, data)</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Complete!</div>
+                    <div style="text-align: center; padding: 30px;">
+                        <div style="font-size: 4rem; margin-bottom: 15px;">🎉</div>
+                        <h2 style="color: #00ff88; margin-bottom: 15px;">You've Mastered Head Insertion!</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 25px; color: #ccc;">
+                            You now understand how to insert nodes at the head efficiently!
+                        </p>
+                    </div>
+                    <div class="demo-area">
+                        <h3 style="color: #00d9ff; margin-bottom: 15px; text-align: center;">🧠 Key Takeaways</h3>
+                        <div style="display: grid; gap: 10px;">
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Head insertion is O(1) - fastest linked list operation!
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Always return the new node as the new head
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Works with empty list - no special case needed
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Much faster than tail insertion (O(1) vs O(n))
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 30px; padding: 20px; background: #151528; border-radius: 10px;">
+                        <p style="margin-bottom: 15px;"><strong>Ready to practice?</strong></p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <a href="https://www.hackerrank.com/challenges/insert-a-node-at-the-head-of-a-linked-list/problem?isFullScreen=true" style="color: #00d9ff; text-decoration: none; padding: 10px 20px; border: 2px solid #00d9ff; border-radius: 5px;">🎯 Solve on HackerRank</a>
+                            <a href="https://www.youtube.com/@AmirCharkhi" style="color: #00ff88; text-decoration: none; padding: 10px 20px; border: 2px solid #00ff88; border-radius: 5px;">📺 Watch Video</a>
+                            <a href="https://github.com/wvlt/hackerrank-dsa-tutorial" style="color: #c792ea; text-decoration: none; padding: 10px 20px; border: 2px solid #c792ea; border-radius: 5px;">💻 View Code</a>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+        
+        function updateProgress() {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepCount').textContent = `Step ${currentStep + 1} of ${steps.length}`;
+            
+            const step = steps[currentStep];
+            document.getElementById('phaseLabel').textContent = `Phase ${step.phase}: ${step.phaseName}`;
+            
+            document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'complete');
+                if (i + 1 < step.phase) {
+                    dot.classList.add('complete');
+                } else if (i + 1 === step.phase) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        function renderStep() {
+            document.getElementById('contentArea').innerHTML = steps[currentStep].content;
+            document.getElementById('backBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').textContent = currentStep === steps.length - 1 ? '🎉 Finish!' : 'Continue →';
+            updateProgress();
+        }
+        
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        renderStep();
+    </script>
 </body>
 </html>
-

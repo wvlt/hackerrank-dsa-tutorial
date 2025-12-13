@@ -3,95 +3,511 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sparse Arrays | HackerRank DSA Tutorial</title>
+    <title>Sparse Arrays | Interactive Tutorial | AI Tech Institute</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6; color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh; color: #fff;
         }
-        .container {
-            max-width: 900px; margin: 0 auto; background: white;
-            border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        .brand-header {
+            background: #0d0d1a; padding: 20px; text-align: center; border-bottom: 2px solid #2d2d44;
         }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 40px; text-align: center;
+        .brand-header h1 { color: #00d9ff; font-size: 1.5rem; margin-bottom: 10px; }
+        .brand-links {
+            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px;
         }
-        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .content { padding: 40px; }
-        .section { margin-bottom: 40px; }
-        .section h2 {
-            color: #667eea; font-size: 1.8em; margin-bottom: 15px;
-            padding-bottom: 10px; border-bottom: 3px solid #667eea;
+        .brand-link {
+            color: #00d9ff; text-decoration: none; padding: 5px 10px; border: 1px solid #00d9ff;
+            border-radius: 5px; transition: all 0.3s; font-size: 0.9rem;
         }
-        .code-block {
-            background: #2d2d2d; color: #f8f8f2; padding: 20px;
-            border-radius: 8px; overflow-x: auto; margin: 15px 0;
-            font-family: 'Courier New', monospace;
+        .brand-link:hover { background: #00d9ff; color: #1a1a2e; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .progress-container {
+            background: #0d0d1a; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px;
         }
-        .code-block .comment { color: #75715e; }
-        .code-block .keyword { color: #f92672; }
-        .code-block .function { color: #a6e22e; }
-        .example {
-            background: #e8f4f8; border-left: 4px solid #17a2b8;
-            padding: 15px; margin: 15px 0; border-radius: 5px;
+        .progress-label {
+            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem;
         }
-        .btn {
-            display: inline-block; padding: 12px 24px;
-            background: #667eea; color: white; text-decoration: none;
-            border-radius: 6px; margin: 10px 5px;
+        .progress-bar {
+            height: 8px; background: #2d2d44; border-radius: 4px; overflow: hidden;
         }
-        .btn:hover { background: #764ba2; }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 4px; transition: width 0.5s ease;
+        }
+        .phase-dots {
+            display: flex; justify-content: center; gap: 8px; margin-top: 10px;
+        }
+        .phase-dot {
+            width: 10px; height: 10px; border-radius: 50%; background: #2d2d44; transition: all 0.3s;
+        }
+        .phase-dot.active { background: #00d9ff; box-shadow: 0 0 10px #00d9ff; }
+        .phase-dot.complete { background: #00ff88; }
+        .content-area {
+            background: #0d0d1a; border-radius: 16px; padding: 30px;
+            min-height: 450px; border: 1px solid #2d2d44; margin-bottom: 20px;
+        }
+        .phase-title {
+            color: #00d9ff; font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .main-title {
+            font-size: 1.6rem; margin-bottom: 20px; line-height: 1.3;
+        }
+        .story-text {
+            font-size: 1.1rem; line-height: 1.8; color: #ccc; margin-bottom: 25px;
+        }
+        .story-text .highlight { color: #00d9ff; font-weight: 600; }
+        .story-text .highlight-green { color: #00ff88; font-weight: 600; }
+        .demo-area {
+            background: #151528; border-radius: 12px; padding: 25px; margin: 20px 0; min-height: 200px;
+        }
+        .string-list {
+            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+        }
+        .string-box {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2); color: white;
+            padding: 12px 18px; border-radius: 8px; font-weight: bold; font-size: 1rem;
+        }
+        .string-box.frequent {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+        .code-reveal {
+            background: #0a0a12; border-radius: 10px; padding: 20px;
+            font-family: 'Fira Code', monospace; font-size: 0.9rem; margin-top: 20px;
+            border: 1px solid #2d2d44;
+        }
+        .code-line {
+            padding: 4px 0; opacity: 1;
+        }
+        .code-line.highlighted {
+            background: rgba(0, 217, 255, 0.15); border-left: 3px solid #00d9ff;
+            padding-left: 10px; margin-left: -10px;
+        }
+        .keyword { color: #c792ea; }
+        .variable { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; }
+        .insight-box {
+            background: linear-gradient(135deg, #00594f, #007a6c);
+            border-radius: 10px; padding: 20px; margin: 20px 0;
+            display: flex; gap: 15px; align-items: flex-start;
+        }
+        .insight-icon { font-size: 1.5rem; }
+        .insight-text { line-height: 1.6; }
+        .nav-buttons {
+            display: flex; justify-content: space-between; gap: 15px;
+        }
+        .nav-btn {
+            padding: 14px 30px; border: none; border-radius: 10px;
+            cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s;
+        }
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e; flex: 1;
+        }
+        .nav-btn.primary:hover {
+            transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+        .nav-btn.secondary {
+            background: #2d2d44; color: #fff;
+        }
+        .nav-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; transform: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📚 Sparse Arrays</h1>
-            <p>By Amir Charkhi | AI Tech Institute</p>
-        </div>
-        <div class="content">
-            <div class="section">
-                <h2>🎯 Purpose</h2>
-                <p>Master frequency counting using hash maps. This problem demonstrates how to optimize from O(n×m) to O(n+m) by using the right data structure.</p>
-            </div>
-            <div class="section">
-                <h2>📋 Problem Statement</h2>
-                <p>For each query string, determine how many times it occurs in the list of input strings.</p>
-                <div class="example">
-                    <strong>Example:</strong><br>
-                    Input: <code>["aba", "baba", "aba", "xzxb"]</code><br>
-                    Queries: <code>["aba", "xzxb", "ab"]</code><br>
-                    Results: <code>[2, 1, 0]</code>
-                </div>
-            </div>
-            <div class="section">
-                <h2>💡 Optimized Solution: Hash Map</h2>
-                <div class="code-block">
-<span class="keyword">def</span> <span class="function">matchingStrings</span>(stringList, queries):
-    <span class="comment"># Build frequency map: O(n)</span>
-    frequencies = {}
-    <span class="keyword">for</span> string <span class="keyword">in</span> stringList:
-        frequencies[string] = frequencies.get(string, <span class="string">0</span>) + <span class="string">1</span>
-    
-    <span class="comment"># Lookup each query: O(m)</span>
-    results = []
-    <span class="keyword">for</span> query <span class="keyword">in</span> queries:
-        results.append(frequencies.get(query, <span class="string">0</span>))
-    
-    <span class="keyword">return</span> results
-                </div>
-                <p><strong>Time:</strong> O(n + m) | <strong>Space:</strong> O(n + m)</p>
-            </div>
-            <div class="section">
-                <h2>🔗 Resources</h2>
-                <a href="https://www.hackerrank.com/challenges/sparse-arrays/problem?isFullScreen=true" class="btn" target="_blank">Solve on HackerRank</a>
-            </div>
+    <div class="brand-header">
+        <h1>🚀 AI Tech Institute | Amir Charkhi</h1>
+        <div class="brand-links">
+            <a href="https://www.youtube.com/@AmirCharkhi" class="brand-link" target="_blank">📺 YouTube</a>
+            <a href="https://github.com/wvlt/hackerrank-dsa-tutorial" class="brand-link" target="_blank">💻 GitHub</a>
+            <a href="https://www.linkedin.com/in/amircharkhi" class="brand-link" target="_blank">💼 LinkedIn</a>
+            <a href="https://www.hackerrank.com/challenges/sparse-arrays/problem?isFullScreen=true" class="brand-link" target="_blank">🎯 Problem</a>
         </div>
     </div>
+    
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-label">
+                <span id="phaseLabel">Phase 1: Understanding Frequency</span>
+                <span id="stepCount">Step 1 of 16</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 6%"></div>
+            </div>
+            <div class="phase-dots">
+                <div class="phase-dot active" title="Understanding"></div>
+                <div class="phase-dot" title="Brute Force"></div>
+                <div class="phase-dot" title="Hash Map"></div>
+                <div class="phase-dot" title="The Code"></div>
+                <div class="phase-dot" title="Mastery"></div>
+            </div>
+        </div>
+        
+        <div class="content-area" id="contentArea"></div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn secondary" id="backBtn" onclick="prevStep()" disabled>← Back</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextStep()">Continue →</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 0;
+        const steps = [
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding Frequency</div>
+                    <h1 class="main-title">🔢 What is Frequency Counting?</h1>
+                    <p class="story-text">
+                        We need to count how many times each <span class="highlight">query string</span> appears in the input strings.
+                    </p>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="color: #888; margin-bottom: 15px;">Input strings:</div>
+                            <div class="string-list">
+                                <div class="string-box frequent">aba</div>
+                                <div class="string-box">baba</div>
+                                <div class="string-box frequent">aba</div>
+                                <div class="string-box">xzxb</div>
+                            </div>
+                            <div style="margin-top: 20px; color: #888;">Queries:</div>
+                            <div class="string-list" style="margin-top: 10px;">
+                                <div class="string-box" style="background: linear-gradient(135deg, #00ff88, #00b894);">aba</div>
+                                <div class="string-box" style="background: linear-gradient(135deg, #00ff88, #00b894);">xzxb</div>
+                                <div class="string-box" style="background: linear-gradient(135deg, #00ff88, #00b894);">ab</div>
+                            </div>
+                            <div style="margin-top: 20px; color: #00ff88;">
+                                Results: <strong>[2, 1, 0]</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            "aba" appears <strong>2 times</strong>, "xzxb" appears <strong>1 time</strong>, "ab" appears <strong>0 times</strong>. This is a classic frequency counting problem!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding Frequency</div>
+                    <h1 class="main-title">🎯 Why This Matters</h1>
+                    <p class="story-text">
+                        Frequency counting appears in <span class="highlight">countless interview problems</span> - and there's a huge optimization opportunity!
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ff6b6b;">Brute Force:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">For each query, check ALL strings</div>
+                                <div style="color: #ff6b6b; margin-top: 10px;">Time: O(n × m) ❌</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">Hash Map:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">Count once, lookup in O(1)</div>
+                                <div style="color: #00ff88; margin-top: 10px;">Time: O(n + m) ✅</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🚀</div>
+                        <div class="insight-text">
+                            By using a hash map (dictionary), we can reduce time complexity from <strong>O(n×m)</strong> to <strong>O(n+m)</strong> - a massive improvement when both n and m are large!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "Brute Force",
+                content: `
+                    <div class="phase-title">Phase 2: Brute Force Approach</div>
+                    <h1 class="main-title">🐢 The Simple (Slow) Way</h1>
+                    <p class="story-text">
+                        Check each query against every string:
+                    </p>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line highlighted">
+                                <span class="keyword">for</span> query <span class="keyword">in</span> queries:
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;count = <span class="string">0</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> string <span class="keyword">in</span> stringList:
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> query == string:
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += <span class="string">1</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #5c2626; border-radius: 8px;">
+                            <strong style="color: #ff6b6b;">Problem:</strong> For m queries, we check n strings each time = <strong>O(n × m)</strong> operations!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Hash Map",
+                content: `
+                    <div class="phase-title">Phase 3: Hash Map Optimization</div>
+                    <h1 class="main-title">🚀 The Smart Way</h1>
+                    <p class="story-text">
+                        Count frequencies <span class="highlight">once</span>, then lookup each query in O(1)!
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00d9ff;">
+                                <strong style="color: #00d9ff;">Step 1: Build Frequency Map</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">
+                                    frequencies = {"aba": 2, "baba": 1, "xzxb": 1}
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                                <strong style="color: #00ff88;">Step 2: Lookup Each Query</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">
+                                    Query "aba" → frequencies.get("aba", 0) = 2 ✓<br>
+                                    Query "ab" → frequencies.get("ab", 0) = 0 ✓
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            <strong>Key insight:</strong> By preprocessing with a dictionary, we count each string only <strong>once</strong> (O(n)), then lookup is O(1) per query (O(m) total). Result: O(n+m)!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "Hash Map",
+                content: `
+                    <div class="phase-title">Phase 3: Hash Map Optimization</div>
+                    <h1 class="main-title">📊 Visualizing the Optimization</h1>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div>
+                                    <div style="color: #ff6b6b; font-weight: bold; margin-bottom: 10px;">Brute Force</div>
+                                    <div style="font-size: 0.85rem; color: #aaa;">
+                                        Query 1: Check 4 strings<br>
+                                        Query 2: Check 4 strings<br>
+                                        Query 3: Check 4 strings<br>
+                                        <strong>Total: 12 comparisons</strong>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="color: #00ff88; font-weight: bold; margin-bottom: 10px;">Hash Map</div>
+                                    <div style="font-size: 0.85rem; color: #aaa;">
+                                        Build map: 4 operations<br>
+                                        Query 1: 1 lookup<br>
+                                        Query 2: 1 lookup<br>
+                                        Query 3: 1 lookup<br>
+                                        <strong>Total: 7 operations</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 15px; background: #00594f; border-radius: 8px;">
+                                <strong style="color: #00ff88;">42% faster!</strong> And the advantage grows with more queries!
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">💻 Optimized Solution</h1>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line highlighted">
+                                <span class="keyword">def</span> <span class="variable">matchingStrings</span>(stringList, queries):
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Build frequency map: O(n)</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;frequencies = {}
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> string <span class="keyword">in</span> stringList:
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequencies[string] = frequencies.<span class="variable">get</span>(string, <span class="string">0</span>) + <span class="string">1</span>
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Lookup each query: O(m)</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;results = []
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> query <span class="keyword">in</span> queries:
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;results.append(frequencies.<span class="variable">get</span>(query, <span class="string">0</span>))
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> results
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🔑</div>
+                        <div class="insight-text">
+                            <strong>dict.get(key, default):</strong> This safely returns the value if key exists, or the default (0) if it doesn't - no KeyError!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⏱️ Complexity Analysis</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">⏱️</div>
+                                <div style="color: #00d9ff; font-size: 1.5rem; margin-bottom: 5px;">O(n+m)</div>
+                                <div style="color: #aaa; font-size: 0.9rem;">Count once (n), lookup (m)</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">💾</div>
+                                <div style="color: #00ff88; font-size: 1.5rem; margin-bottom: 5px;">O(n+m)</div>
+                                <div style="color: #aaa; font-size: 0.9rem;">Store frequencies and results</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #00594f; border-radius: 8px; text-align: center;">
+                            <strong style="color: #00ff88;">Improvement:</strong> Reduced from O(n×m) to O(n+m) - linear time!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⚠️ Common Pitfalls</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Not Handling Missing Keys</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Using <code>frequencies[query]</code> causes KeyError if query doesn't exist. Use <code>.get(query, 0)</code>!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Using Brute Force</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Always consider hash maps for frequency problems - they're almost always the answer!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Complete!</div>
+                    <div style="text-align: center; padding: 30px;">
+                        <div style="font-size: 4rem; margin-bottom: 15px;">🎉</div>
+                        <h2 style="color: #00ff88; margin-bottom: 15px;">You've Mastered Frequency Counting!</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 25px; color: #ccc;">
+                            You now understand how to optimize frequency problems using hash maps!
+                        </p>
+                    </div>
+                    <div class="demo-area">
+                        <h3 style="color: #00d9ff; margin-bottom: 15px; text-align: center;">🧠 Key Takeaways</h3>
+                        <div style="display: grid; gap: 10px;">
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Hash maps reduce O(n×m) to O(n+m) - huge improvement!
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Always use <code>dict.get(key, default)</code> for safe lookups
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Preprocessing pays off - count once, lookup many times
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> For frequency problems, dictionaries are almost always the answer
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 30px; padding: 20px; background: #151528; border-radius: 10px;">
+                        <p style="margin-bottom: 15px;"><strong>Ready to practice?</strong></p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <a href="https://www.hackerrank.com/challenges/sparse-arrays/problem?isFullScreen=true" style="color: #00d9ff; text-decoration: none; padding: 10px 20px; border: 2px solid #00d9ff; border-radius: 5px;">🎯 Solve on HackerRank</a>
+                            <a href="https://www.youtube.com/@AmirCharkhi" style="color: #00ff88; text-decoration: none; padding: 10px 20px; border: 2px solid #00ff88; border-radius: 5px;">📺 Watch Video</a>
+                            <a href="https://github.com/wvlt/hackerrank-dsa-tutorial" style="color: #c792ea; text-decoration: none; padding: 10px 20px; border: 2px solid #c792ea; border-radius: 5px;">💻 View Code</a>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+        
+        function updateProgress() {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepCount').textContent = `Step ${currentStep + 1} of ${steps.length}`;
+            
+            const step = steps[currentStep];
+            document.getElementById('phaseLabel').textContent = `Phase ${step.phase}: ${step.phaseName}`;
+            
+            document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'complete');
+                if (i + 1 < step.phase) {
+                    dot.classList.add('complete');
+                } else if (i + 1 === step.phase) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        function renderStep() {
+            document.getElementById('contentArea').innerHTML = steps[currentStep].content;
+            document.getElementById('backBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').textContent = currentStep === steps.length - 1 ? '🎉 Finish!' : 'Continue →';
+            updateProgress();
+        }
+        
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        renderStep();
+    </script>
 </body>
 </html>
-

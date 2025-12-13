@@ -3,382 +3,629 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D Array DS - Hourglass Sum | HackerRank DSA Tutorial</title>
+    <title>2D Array DS - Hourglass Sum | Interactive Tutorial | AI Tech Institute</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh; color: #fff;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
+        .brand-header {
+            background: #0d0d1a; padding: 20px; text-align: center; border-bottom: 2px solid #2d2d44;
         }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
+        .brand-header h1 { color: #00d9ff; font-size: 1.5rem; margin-bottom: 10px; }
+        .brand-links {
+            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 10px;
         }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .brand-link {
+            color: #00d9ff; text-decoration: none; padding: 5px 10px; border: 1px solid #00d9ff;
+            border-radius: 5px; transition: all 0.3s; font-size: 0.9rem;
         }
-        
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+        .brand-link:hover { background: #00d9ff; color: #1a1a2e; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .progress-container {
+            background: #0d0d1a; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px;
         }
-        
-        .content {
-            padding: 40px;
+        .progress-label {
+            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.85rem;
         }
-        
-        .section {
-            margin-bottom: 40px;
+        .progress-bar {
+            height: 8px; background: #2d2d44; border-radius: 4px; overflow: hidden;
         }
-        
-        .section h2 {
-            color: #667eea;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #00d9ff, #00ff88);
+            border-radius: 4px; transition: width 0.5s ease;
         }
-        
-        .section h3 {
-            color: #764ba2;
-            font-size: 1.4em;
-            margin-top: 25px;
-            margin-bottom: 12px;
+        .phase-dots {
+            display: flex; justify-content: center; gap: 8px; margin-top: 10px;
         }
-        
-        .problem-box {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
+        .phase-dot {
+            width: 10px; height: 10px; border-radius: 50%; background: #2d2d44; transition: all 0.3s;
         }
-        
-        .example {
-            background: #e8f4f8;
-            border-left: 4px solid #17a2b8;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
+        .phase-dot.active { background: #00d9ff; box-shadow: 0 0 10px #00d9ff; }
+        .phase-dot.complete { background: #00ff88; }
+        .content-area {
+            background: #0d0d1a; border-radius: 16px; padding: 30px;
+            min-height: 450px; border: 1px solid #2d2d44; margin-bottom: 20px;
         }
-        
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.5;
+        .phase-title {
+            color: #00d9ff; font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 8px;
         }
-        
-        .code-block .comment {
-            color: #75715e;
+        .main-title {
+            font-size: 1.6rem; margin-bottom: 20px; line-height: 1.3;
         }
-        
-        .code-block .keyword {
-            color: #f92672;
+        .story-text {
+            font-size: 1.1rem; line-height: 1.8; color: #ccc; margin-bottom: 25px;
         }
-        
-        .code-block .function {
-            color: #a6e22e;
+        .story-text .highlight { color: #00d9ff; font-weight: 600; }
+        .story-text .highlight-green { color: #00ff88; font-weight: 600; }
+        .demo-area {
+            background: #151528; border-radius: 12px; padding: 25px; margin: 20px 0; min-height: 200px;
         }
-        
-        .code-block .string {
-            color: #e6db74;
+        .matrix-grid {
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+            max-width: 500px; margin: 20px auto;
         }
-        
-        .complexity-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
+        .matrix-cell {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2); color: white;
+            padding: 12px; border-radius: 6px; text-align: center; font-weight: bold;
+            font-size: 0.85rem; min-height: 40px; display: flex; align-items: center; justify-content: center;
         }
-        
-        .complexity-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #667eea;
+        .matrix-cell.hourglass {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
         }
-        
-        .complexity-card h4 {
-            color: #667eea;
-            margin-bottom: 10px;
+        .code-reveal {
+            background: #0a0a12; border-radius: 10px; padding: 20px;
+            font-family: 'Fira Code', monospace; font-size: 0.9rem; margin-top: 20px;
+            border: 1px solid #2d2d44;
         }
-        
-        .takeaway {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
+        .code-line {
+            padding: 4px 0; opacity: 1;
         }
-        
-        .takeaway strong {
-            color: #856404;
+        .code-line.highlighted {
+            background: rgba(0, 217, 255, 0.15); border-left: 3px solid #00d9ff;
+            padding-left: 10px; margin-left: -10px;
         }
-        
-        .visualization {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: center;
+        .keyword { color: #c792ea; }
+        .variable { color: #82aaff; }
+        .string { color: #c3e88d; }
+        .comment { color: #546e7a; }
+        .insight-box {
+            background: linear-gradient(135deg, #00594f, #007a6c);
+            border-radius: 10px; padding: 20px; margin: 20px 0;
+            display: flex; gap: 15px; align-items: flex-start;
         }
-        
-        .matrix {
-            display: inline-block;
-            border: 2px solid #667eea;
-            border-collapse: collapse;
-            margin: 15px 0;
+        .insight-icon { font-size: 1.5rem; }
+        .insight-text { line-height: 1.6; }
+        .nav-buttons {
+            display: flex; justify-content: space-between; gap: 15px;
         }
-        
-        .matrix td {
-            width: 50px;
-            height: 50px;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1em;
+        .nav-btn {
+            padding: 14px 30px; border: none; border-radius: 10px;
+            cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s;
         }
-        
-        .matrix td.hourglass {
-            background: #ffeb3b;
-            color: #333;
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #00d9ff, #0099cc);
+            color: #1a1a2e; flex: 1;
         }
-        
-        .matrix td.hourglass-middle {
-            background: #ff9800;
-            color: white;
+        .nav-btn.primary:hover {
+            transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
         }
-        
-        .hourglass-pattern {
-            display: inline-block;
-            margin: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+        .nav-btn.secondary {
+            background: #2d2d44; color: #fff;
         }
-        
-        ul, ol {
-            margin-left: 25px;
-            margin-top: 10px;
-        }
-        
-        li {
-            margin-bottom: 8px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            margin: 10px 5px;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: #764ba2;
-        }
-        
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
-            .content {
-                padding: 20px;
-            }
-            
-            .complexity-box {
-                grid-template-columns: 1fr;
-            }
+        .nav-btn:disabled {
+            opacity: 0.5; cursor: not-allowed; transform: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📚 2D Array DS - Hourglass Sum</h1>
-            <p>By Amir Charkhi | AI Tech Institute</p>
-        </div>
-        
-        <div class="content">
-            <div class="section">
-                <h2>🎯 Purpose</h2>
-                <p>Master the art of working with 2D arrays by solving the hourglass sum problem. This challenge teaches you pattern recognition in matrices, nested loop optimization, and how to efficiently traverse 2D data structures - skills essential for matrix-related problems in coding interviews.</p>
-            </div>
-            
-            <div class="section">
-                <h2>📋 Problem Statement</h2>
-                <div class="problem-box">
-                    <p><strong>Given a 6×6 2D array, find the maximum sum of all hourglass patterns.</strong></p>
-                </div>
-                
-                <h3>What is an Hourglass Pattern?</h3>
-                <p>An hourglass consists of 7 elements arranged as:</p>
-                
-                <div class="hourglass-pattern">
-                    <table class="matrix">
-                        <tr>
-                            <td class="hourglass">a</td>
-                            <td class="hourglass">b</td>
-                            <td class="hourglass">c</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="hourglass-middle">d</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="hourglass">e</td>
-                            <td class="hourglass">f</td>
-                            <td class="hourglass">g</td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <div class="example">
-                    <strong>Example Array:</strong><br>
-                    <pre style="margin-top: 10px;">
-1 1 1 0 0 0
-0 1 0 0 0 0
-1 1 1 0 0 0
-0 0 2 4 4 0
-0 0 0 2 0 0
-0 0 1 2 4 0</pre>
-                    <p style="margin-top: 10px;"><strong>Maximum hourglass sum: 19</strong></p>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h2>💡 Understanding the Pattern</h2>
-                <p>For an hourglass starting at position (i, j), the elements are:</p>
-                <ul>
-                    <li><strong>Top row:</strong> arr[i][j], arr[i][j+1], arr[i][j+2]</li>
-                    <li><strong>Middle:</strong> arr[i+1][j+1]</li>
-                    <li><strong>Bottom row:</strong> arr[i+2][j], arr[i+2][j+1], arr[i+2][j+2]</li>
-                </ul>
-                
-                <div class="takeaway">
-                    <strong>Key Insight:</strong> For a 6×6 array, we can have hourglasses starting at positions (0,0) through (3,3), giving us 4×4 = 16 possible hourglasses.
-                </div>
-            </div>
-            
-            <div class="section">
-                <h2>💡 Solution Approach</h2>
-                <p>The strategy is straightforward:</p>
-                <ol>
-                    <li>Iterate through all possible starting positions (i, j) where an hourglass can fit</li>
-                    <li>Calculate the sum of each hourglass pattern</li>
-                    <li>Track the maximum sum encountered</li>
-                </ol>
-                
-                <div class="code-block">
-<span class="keyword">def</span> <span class="function">hourglassSum</span>(arr):
-    <span class="comment">"""
-    Find the maximum hourglass sum in a 6x6 2D array.
-    """</span>
-    max_sum = <span class="function">float</span>(<span class="string">'-inf'</span>)  <span class="comment"># Handle negative sums</span>
-    
-    <span class="comment"># Iterate through all possible starting positions</span>
-    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="string">4</span>):
-        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="function">range</span>(<span class="string">4</span>):
-            <span class="comment"># Calculate hourglass sum</span>
-            top = arr[i][j] + arr[i][j + <span class="string">1</span>] + arr[i][j + <span class="string">2</span>]
-            middle = arr[i + <span class="string">1</span>][j + <span class="string">1</span>]
-            bottom = arr[i + <span class="string">2</span>][j] + arr[i + <span class="string">2</span>][j + <span class="string">1</span>] + arr[i + <span class="string">2</span>][j + <span class="string">2</span>]
-            
-            current_sum = top + middle + bottom
-            
-            <span class="keyword">if</span> current_sum > max_sum:
-                max_sum = current_sum
-    
-    <span class="keyword">return</span> max_sum
-                </div>
-            </div>
-            
-            <div class="section">
-                <h2>🔍 Complexity Analysis</h2>
-                <div class="complexity-box">
-                    <div class="complexity-card">
-                        <h4>⏱️ Time Complexity</h4>
-                        <p><strong>O(1)</strong> - We always iterate through exactly 16 hourglasses (4×4), regardless of the array size</p>
-                    </div>
-                    <div class="complexity-card">
-                        <h4>💾 Space Complexity</h4>
-                        <p><strong>O(1)</strong> - We only use a constant amount of extra space</p>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 15px;"><em>Note: While this is technically O(1) for a fixed-size 6×6 array, if we generalize to n×n arrays, the complexity would be O(n²).</em></p>
-            </div>
-            
-            <div class="section">
-                <h2>🎯 Key Takeaways</h2>
-                <ul>
-                    <li><strong>Pattern Recognition:</strong> Identifying the hourglass pattern is crucial - it's a fixed 3×3 pattern with a gap in the middle</li>
-                    <li><strong>Boundary Conditions:</strong> For a 6×6 array, valid starting positions are (0,0) through (3,3)</li>
-                    <li><strong>Initialization:</strong> Use <code>float('-inf')</code> instead of 0 to handle arrays with all negative values</li>
-                    <li><strong>Index Management:</strong> Careful attention to indices prevents off-by-one errors</li>
-                </ul>
-            </div>
-            
-            <div class="section">
-                <h2>⚠️ Common Pitfalls</h2>
-                <ul>
-                    <li><strong>Wrong range:</strong> Using <code>range(6)</code> instead of <code>range(4)</code> will cause index out of bounds</li>
-                    <li><strong>Initializing max_sum to 0:</strong> This fails when all hourglasses have negative sums</li>
-                    <li><strong>Missing elements:</strong> Forgetting one of the 7 elements in the hourglass pattern</li>
-                    <li><strong>Index confusion:</strong> Mixing up row and column indices (i vs j)</li>
-                </ul>
-            </div>
-            
-            <div class="section">
-                <h2>📚 Practice Recommendations</h2>
-                <ul>
-                    <li>Try visualizing the hourglass pattern on paper</li>
-                    <li>Practice with different array sizes (generalize to n×n)</li>
-                    <li>Consider variations: find minimum hourglass sum, count hourglasses with sum > threshold</li>
-                    <li>Think about how you'd optimize if the array could be larger</li>
-                </ul>
-            </div>
-            
-            <div class="section">
-                <h2>🔗 Resources</h2>
-                <a href="https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true" class="btn" target="_blank">Solve on HackerRank</a>
-                <a href="https://www.youtube.com/playlist?list=PLV7y2_WFMCLKlGSC2Z-pZw1enbjeH7Hkq" class="btn" target="_blank">More DSA Tutorials</a>
-            </div>
+    <div class="brand-header">
+        <h1>🚀 AI Tech Institute | Amir Charkhi</h1>
+        <div class="brand-links">
+            <a href="https://www.youtube.com/@AmirCharkhi" class="brand-link" target="_blank">📺 YouTube</a>
+            <a href="https://github.com/wvlt/hackerrank-dsa-tutorial" class="brand-link" target="_blank">💻 GitHub</a>
+            <a href="https://www.linkedin.com/in/amircharkhi" class="brand-link" target="_blank">💼 LinkedIn</a>
+            <a href="https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true" class="brand-link" target="_blank">🎯 Problem</a>
         </div>
     </div>
+    
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-label">
+                <span id="phaseLabel">Phase 1: Understanding 2D Arrays</span>
+                <span id="stepCount">Step 1 of 16</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 6%"></div>
+            </div>
+            <div class="phase-dots">
+                <div class="phase-dot active" title="Understanding"></div>
+                <div class="phase-dot" title="The Pattern"></div>
+                <div class="phase-dot" title="The Algorithm"></div>
+                <div class="phase-dot" title="The Code"></div>
+                <div class="phase-dot" title="Mastery"></div>
+            </div>
+        </div>
+        
+        <div class="content-area" id="contentArea"></div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn secondary" id="backBtn" onclick="prevStep()" disabled>← Back</button>
+            <button class="nav-btn primary" id="nextBtn" onclick="nextStep()">Continue →</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 0;
+        const steps = [
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding 2D Arrays</div>
+                    <h1 class="main-title">📊 What is a 2D Array?</h1>
+                    <p class="story-text">
+                        A 2D array is like a <span class="highlight">grid or matrix</span> - think of it as rows and columns, like a spreadsheet!
+                    </p>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="color: #888; margin-bottom: 15px;">A 6×6 2D Array looks like:</div>
+                            <div class="matrix-grid">
+                                <div class="matrix-cell">1</div><div class="matrix-cell">1</div><div class="matrix-cell">1</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">1</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">1</div><div class="matrix-cell">1</div><div class="matrix-cell">1</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">2</div><div class="matrix-cell">4</div><div class="matrix-cell">4</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">2</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">1</div><div class="matrix-cell">2</div><div class="matrix-cell">4</div><div class="matrix-cell">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            We access elements using <strong>arr[row][column]</strong>. For example, <code>arr[0][0]</code> is the top-left element (1), and <code>arr[5][5]</code> is the bottom-right element (0).
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 1, phaseName: "Understanding",
+                content: `
+                    <div class="phase-title">Phase 1: Understanding 2D Arrays</div>
+                    <h1 class="main-title">🎯 Our Mission: Find Hourglass Patterns</h1>
+                    <p class="story-text">
+                        We need to find <span class="highlight">hourglass patterns</span> in this 6×6 grid and calculate their sums!
+                    </p>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="color: #ffd700; margin-bottom: 10px; font-weight: bold;">What is an Hourglass?</div>
+                            <div style="font-family: monospace; font-size: 1.2rem; line-height: 1.8; margin: 20px 0;">
+                                <div>a &nbsp;&nbsp;&nbsp; b &nbsp;&nbsp;&nbsp; c</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d</div>
+                                <div>e &nbsp;&nbsp;&nbsp; f &nbsp;&nbsp;&nbsp; g</div>
+                            </div>
+                            <p style="color: #aaa; margin-top: 15px;">An hourglass has <span style="color: #00ff88;">7 elements</span>: 3 on top, 1 in middle, 3 on bottom</p>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🔍</div>
+                        <div class="insight-text">
+                            Notice the <strong>gap in the middle row</strong> - that's what makes it look like an hourglass! We need to find all possible hourglasses and calculate each one's sum.
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "The Pattern",
+                content: `
+                    <div class="phase-title">Phase 2: The Hourglass Pattern</div>
+                    <h1 class="main-title">📍 Where Can Hourglasses Start?</h1>
+                    <p class="story-text">
+                        For a 6×6 array, where can we place an hourglass? Let's think about the boundaries!
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00d9ff;">
+                                <strong style="color: #00d9ff;">Hourglass Size:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">An hourglass needs 3 rows and 3 columns</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ffd700;">
+                                <strong style="color: #ffd700;">Array Size:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">We have 6 rows and 6 columns</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                                <strong style="color: #00ff88;">Valid Starting Positions:</strong>
+                                <div style="color: #aaa; margin-top: 5px;">Starting row: 0 to 3 (4 options)<br>Starting column: 0 to 3 (4 options)<br><strong>Total: 4×4 = 16 hourglasses!</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">⚠️</div>
+                        <div class="insight-text">
+                            <strong>Why not range(6)?</strong> If we start at row 4, we'd need rows 4, 5, 6 - but we only have rows 0-5! That's why we use <code>range(4)</code> - it ensures we always have enough space.
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "The Pattern",
+                content: `
+                    <div class="phase-title">Phase 2: The Hourglass Pattern</div>
+                    <h1 class="main-title">🔍 Visualizing an Hourglass</h1>
+                    <p class="story-text">
+                        Let's see an hourglass starting at position (0,0) - the top-left corner:
+                    </p>
+                    <div class="demo-area">
+                        <div style="text-align: center;">
+                            <div style="color: #888; margin-bottom: 10px;">Hourglass at (0,0):</div>
+                            <div class="matrix-grid">
+                                <div class="matrix-cell hourglass">1</div><div class="matrix-cell hourglass">1</div><div class="matrix-cell hourglass">1</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell hourglass">1</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell hourglass">1</div><div class="matrix-cell hourglass">1</div><div class="matrix-cell hourglass">1</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">2</div><div class="matrix-cell">4</div><div class="matrix-cell">4</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">2</div><div class="matrix-cell">0</div><div class="matrix-cell">0</div>
+                                <div class="matrix-cell">0</div><div class="matrix-cell">0</div><div class="matrix-cell">1</div><div class="matrix-cell">2</div><div class="matrix-cell">4</div><div class="matrix-cell">0</div>
+                            </div>
+                            <p style="margin-top: 15px; color: #00ff88;">Sum = 1+1+1 + 1 + 1+1+1 = <strong>7</strong></p>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">📐</div>
+                        <div class="insight-text">
+                            <strong>Pattern formula:</strong> For hourglass starting at (i,j), the elements are:<br>
+                            Top row: arr[i][j], arr[i][j+1], arr[i][j+2]<br>
+                            Middle: arr[i+1][j+1]<br>
+                            Bottom: arr[i+2][j], arr[i+2][j+1], arr[i+2][j+2]
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 2, phaseName: "The Pattern",
+                content: `
+                    <div class="phase-title">Phase 2: The Pattern</div>
+                    <h1 class="main-title">🎲 Finding All Hourglasses</h1>
+                    <p class="story-text">
+                        We need to check <span class="highlight">all 16 possible positions</span> and find the maximum sum!
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 400px; margin: 0 auto;">
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(0,0)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(0,1)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(0,2)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(0,3)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(1,0)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(1,1)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(1,2)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(1,3)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(2,0)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(2,1)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(2,2)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(2,3)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(3,0)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(3,1)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(3,2)</div>
+                            <div style="background: #151528; padding: 10px; border-radius: 6px; text-align: center; font-size: 0.85rem;">(3,3)</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 15px; color: #00ff88;">16 positions to check!</p>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">🔄</div>
+                        <div class="insight-text">
+                            We'll use <strong>nested loops</strong>: outer loop for rows (i from 0 to 3), inner loop for columns (j from 0 to 3). This checks every possible hourglass position!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "The Algorithm",
+                content: `
+                    <div class="phase-title">Phase 3: The Algorithm</div>
+                    <h1 class="main-title">📋 Step-by-Step Recipe</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00d9ff;">
+                                <strong style="color: #00d9ff;">Step 1:</strong> Initialize max_sum to negative infinity
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">Use <code>float('-inf')</code> to handle arrays with all negative values</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ffd700;">
+                                <strong style="color: #ffd700;">Step 2:</strong> Loop through all starting positions
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">for i in range(4): for j in range(4):</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                                <strong style="color: #00ff88;">Step 3:</strong> Calculate hourglass sum
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">Sum top row + middle + bottom row</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">Step 4:</strong> Update max_sum if current is larger
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">if current_sum > max_sum: max_sum = current_sum</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #c792ea;">
+                                <strong style="color: #c792ea;">Step 5:</strong> Return max_sum
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 3, phaseName: "The Algorithm",
+                content: `
+                    <div class="phase-title">Phase 3: The Algorithm</div>
+                    <h1 class="main-title">🧮 Calculating the Sum</h1>
+                    <p class="story-text">
+                        For each hourglass, we need to sum <span class="highlight">7 elements</span>. Here's how:
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00d9ff;">Top Row (3 elements):</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-family: monospace;">
+                                    arr[i][j] + arr[i][j+1] + arr[i][j+2]
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #ffd700;">Middle (1 element):</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-family: monospace;">
+                                    arr[i+1][j+1]
+                                </div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px;">
+                                <strong style="color: #00ff88;">Bottom Row (3 elements):</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-family: monospace;">
+                                    arr[i+2][j] + arr[i+2][j+1] + arr[i+2][j+2]
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px; padding: 15px; background: #00594f; border-radius: 8px; text-align: center;">
+                            <strong>Total Sum = Top + Middle + Bottom</strong>
+                        </div>
+                    </div>
+                    <div class="insight-box">
+                        <div class="insight-icon">💡</div>
+                        <div class="insight-text">
+                            We can calculate all 7 elements in <strong>one expression</strong>, or break it into top, middle, and bottom for clarity. Both work!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "The Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">💻 Complete Solution</h1>
+                    <div class="demo-area">
+                        <div class="code-reveal">
+                            <div class="code-line highlighted">
+                                <span class="keyword">def</span> <span class="variable">hourglassSum</span>(arr):
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Initialize with negative infinity</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;max_sum = <span class="variable">float</span>(<span class="string">'-inf'</span>)
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Check all possible starting positions</span>
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> i <span class="keyword">in</span> <span class="variable">range</span>(<span class="string">4</span>):
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> j <span class="keyword">in</span> <span class="variable">range</span>(<span class="string">4</span>):
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># Calculate hourglass sum</span>
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top = arr[i][j] + arr[i][j + <span class="string">1</span>] + arr[i][j + <span class="string">2</span>]
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;middle = arr[i + <span class="string">1</span>][j + <span class="string">1</span>]
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bottom = arr[i + <span class="string">2</span>][j] + arr[i + <span class="string">2</span>][j + <span class="string">1</span>] + arr[i + <span class="string">2</span>][j + <span class="string">2</span>]
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_sum = top + middle + bottom
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> current_sum > max_sum:
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_sum = current_sum
+                            </div>
+                            <div class="code-line">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="code-line highlighted">
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> max_sum
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 4, phaseName: "The Code",
+                content: `
+                    <div class="phase-title">Phase 4: The Code</div>
+                    <h1 class="main-title">🔑 Key Code Elements</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00d9ff;">
+                                <strong style="color: #00d9ff;">range(4) not range(6)</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">We can only start hourglasses at positions 0-3, because we need 3 more rows/columns</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #ffd700;">
+                                <strong style="color: #ffd700;">float('-inf')</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">Initializing to negative infinity ensures we handle arrays with all negative values correctly</div>
+                            </div>
+                            <div style="background: #151528; padding: 15px; border-radius: 8px; border-left: 4px solid #00ff88;">
+                                <strong style="color: #00ff88;">Index calculations</strong>
+                                <div style="color: #aaa; margin-top: 5px; font-size: 0.9rem;">arr[i+1][j+1] accesses the middle element - note the +1 offset for both row and column!</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⏱️ Complexity Analysis</h1>
+                    <p class="story-text">
+                        How efficient is our solution?
+                    </p>
+                    <div class="demo-area">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 2.5rem; margin-bottom: 10px;">⏱️</div>
+                                <div style="color: #00d9ff; font-size: 1.5rem; margin-bottom: 5px;">Time: O(1)</div>
+                                <div style="color: #aaa; font-size: 0.9rem;">Always check exactly 16 hourglasses</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 2.5rem; margin-bottom: 10px;">💾</div>
+                                <div style="color: #00ff88; font-size: 1.5rem; margin-bottom: 5px;">Space: O(1)</div>
+                                <div style="color: #aaa; font-size: 0.9rem;">Only use a few variables</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #00594f; border-radius: 8px;">
+                            <strong style="color: #00ff88;">Note:</strong> This is O(1) for a <strong>fixed-size</strong> 6×6 array. If generalized to n×n, it becomes O(n²)!
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Phase 5: Mastery</div>
+                    <h1 class="main-title">⚠️ Common Pitfalls</h1>
+                    <div class="demo-area">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Wrong Range</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Using <code>range(6)</code> causes index out of bounds! Use <code>range(4)</code>!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Initializing to 0</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    <code>max_sum = 0</code> fails when all hourglasses have negative sums. Use <code>float('-inf')</code>!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Missing Elements</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Forgetting one of the 7 elements gives wrong sums. Double-check the pattern!
+                                </div>
+                            </div>
+                            <div style="background: #5c2626; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                                <strong style="color: #ff6b6b;">❌ Index Confusion</strong>
+                                <div style="color: #aaa; margin-top: 5px;">
+                                    Mixing up row (i) and column (j) indices causes wrong calculations!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                phase: 5, phaseName: "Mastery",
+                content: `
+                    <div class="phase-title">Complete!</div>
+                    <div style="text-align: center; padding: 30px;">
+                        <div style="font-size: 4rem; margin-bottom: 15px;">🎉</div>
+                        <h2 style="color: #00ff88; margin-bottom: 15px;">You've Mastered Hourglass Sum!</h2>
+                        <p style="font-size: 1.1rem; margin-bottom: 25px; color: #ccc;">
+                            You now understand how to find patterns in 2D arrays and calculate their sums efficiently!
+                        </p>
+                    </div>
+                    <div class="demo-area">
+                        <h3 style="color: #00d9ff; margin-bottom: 15px; text-align: center;">🧠 Key Takeaways</h3>
+                        <div style="display: grid; gap: 10px;">
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Use <code>range(4)</code> for 6×6 arrays to avoid index errors
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Initialize <code>max_sum = float('-inf')</code> to handle negative values
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Hourglass has 7 elements: 3 top + 1 middle + 3 bottom
+                            </div>
+                            <div style="background: #151528; padding: 12px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                                <span>✅</span> Time complexity: O(1) for fixed-size array, O(n²) if generalized
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-box" style="margin-top: 20px;">
+                        <div class="insight-icon">🚀</div>
+                        <div class="insight-text">
+                            <strong>Next challenge:</strong> Try generalizing this to work with any n×n array! Can you modify the code to handle variable-sized arrays?
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 30px; padding: 20px; background: #151528; border-radius: 10px;">
+                        <p style="margin-bottom: 15px;"><strong>Ready to practice?</strong></p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <a href="https://www.hackerrank.com/challenges/2d-array/problem?isFullScreen=true" style="color: #00d9ff; text-decoration: none; padding: 10px 20px; border: 2px solid #00d9ff; border-radius: 5px;">🎯 Solve on HackerRank</a>
+                            <a href="https://www.youtube.com/@AmirCharkhi" style="color: #00ff88; text-decoration: none; padding: 10px 20px; border: 2px solid #00ff88; border-radius: 5px;">📺 Watch Video</a>
+                            <a href="https://github.com/wvlt/hackerrank-dsa-tutorial" style="color: #c792ea; text-decoration: none; padding: 10px 20px; border: 2px solid #c792ea; border-radius: 5px;">💻 View Code</a>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+        
+        function updateProgress() {
+            const progress = ((currentStep + 1) / steps.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('stepCount').textContent = `Step ${currentStep + 1} of ${steps.length}`;
+            
+            const step = steps[currentStep];
+            document.getElementById('phaseLabel').textContent = `Phase ${step.phase}: ${step.phaseName}`;
+            
+            document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+                dot.classList.remove('active', 'complete');
+                if (i + 1 < step.phase) {
+                    dot.classList.add('complete');
+                } else if (i + 1 === step.phase) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        function renderStep() {
+            document.getElementById('contentArea').innerHTML = steps[currentStep].content;
+            document.getElementById('backBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').textContent = currentStep === steps.length - 1 ? '🎉 Finish!' : 'Continue →';
+            updateProgress();
+        }
+        
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderStep();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+        
+        renderStep();
+    </script>
 </body>
 </html>
-
