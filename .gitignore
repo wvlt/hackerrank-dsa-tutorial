@@ -27,6 +27,11 @@ generate_*.py
 *.swp
 *.swo
 
+# Workflow and reference files (not for students)
+WORKFLOW_REFERENCE.md
+*_REFERENCE.md
+*_WORKFLOW.md
+
 # Only keep the essential files:
 # - *.ipynb (Jupyter notebooks)
 # - *.html (HTML tutorials)
