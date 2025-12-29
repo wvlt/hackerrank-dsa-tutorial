@@ -9,85 +9,23 @@
 
 ---
 
-## 🤖 Automated Workflow - Quick Start
+<div align="center">
 
-**📍 Run from this directory:** `/Volumes/X10 Pro/Youtube/Hackerrank_DSA/hackerrank-dsa-tutorial`
+### 🌟 **Love This Repository? Help Others Discover It!**
 
-### Usage
+**⭐ Star this repository** if you find it helpful - it helps other learners find quality DSA tutorials!
 
-```bash
-# Navigate to the repository directory
-cd "/Volumes/X10 Pro/Youtube/Hackerrank_DSA/hackerrank-dsa-tutorial"
+**📤 Share with friends** who are preparing for coding interviews or learning data structures & algorithms.
 
-# Preview changes (dry run)
-python3 automate_tutorial_workflow.py VIDEO_ID --dry-run
+**🔔 Watch** the repository to get notified when new tutorials are added!
 
-# Apply changes
-python3 automate_tutorial_workflow.py VIDEO_ID
-```
+[![GitHub stars](https://img.shields.io/github/stars/wvlt/hackerrank-dsa-tutorial?style=social&label=Star)](https://github.com/wvlt/hackerrank-dsa-tutorial)
+[![GitHub forks](https://img.shields.io/github/forks/wvlt/hackerrank-dsa-tutorial?style=social&label=Fork)](https://github.com/wvlt/hackerrank-dsa-tutorial/fork)
+[![GitHub watchers](https://img.shields.io/github/watchers/wvlt/hackerrank-dsa-tutorial?style=social&label=Watch)](https://github.com/wvlt/hackerrank-dsa-tutorial)
 
-### What It Does Automatically
+**Your support helps make quality education accessible to everyone! 🙏**
 
-1. **📹 Fetches Video Info** - Gets video title from YouTube
-2. **🔍 Detects Problem** - Identifies which problem the video covers
-3. **📝 Generates Files** - Creates comprehensive `.ipynb` and `.html` tutorial files with:
-   - Problem statement with examples
-   - Step-by-step solution explanation
-   - Complete code implementation
-   - Complexity analysis
-   - Common pitfalls
-   - Practice recommendations
-4. **📝 Updates Mappings** - Updates `tutorial_mappings.yaml` in YouTube automation tool
-5. **📦 Git Commit** - Commits new files to git
-6. **☁️ Push to GitHub** - Pushes changes to remote repository
-7. **📺 Update YouTube** - Runs `yt-auto process` to add tutorial links, description, chapters, and tags
-
-### Example
-
-```bash
-# From the repository root directory:
-python3 automate_tutorial_workflow.py LiX_wyuACwE --dry-run  # Preview
-python3 automate_tutorial_workflow.py LiX_wyuACwE            # Apply
-```
-
-### Adding New Problems
-
-When you create a video for a new problem, edit `automate_tutorial_workflow.py` and add to `PROBLEM_CONFIGS`:
-
-```python
-PROBLEM_CONFIGS = {
-    "your problem name": {
-        "num": 12,  # Next problem number
-        "slug": "your_problem_slug",  # Filename slug (e.g., "delete_node")
-        "name": "Your Problem Name",  # Display name
-        "hackerrank_url": "https://www.hackerrank.com/challenges/...",
-        "description": "Description of what this problem teaches"
-    },
-    # Add variations for better title matching
-    "variation 1": { ... },  # Same config, different key
-}
-```
-
-### Requirements
-
-- Python 3.7+
-- Git configured with remote repository
-- `yt-auto` command available in PATH
-- YouTube automation tool at: `/Users/amircharkhi/Documents/projects/agentic-ai/youtube-description-chapter-automation`
-
-### Troubleshooting
-
-**Problem Not Detected:**
-- Add more variations to `PROBLEM_CONFIGS` in the script
-- Check that keywords in video title match problem variations
-
-**Git Push Fails:**
-- Ensure you're authenticated with GitHub
-- Verify remote: `git remote -v`
-
-**YouTube Automation Fails:**
-- Ensure `yt-auto` is installed and in PATH
-- Check OAuth setup in YouTube automation directory
+</div>
 
 ---
 
@@ -95,13 +33,23 @@ PROBLEM_CONFIGS = {
 
 This repository contains comprehensive, interactive tutorials for solving **HackerRank Data Structures & Algorithms problems**. Each problem includes:
 
-- 📓 **Jupyter Notebook** - Detailed explanations with code examples and step-by-step solutions
+- 📓 **Jupyter Notebook** - Detailed explanations with code examples
 - 🌐 **Interactive HTML Tutorial** - Step-by-step guided learning experience
 - 💡 **Multiple Solution Approaches** - Learn different ways to solve problems
 - ⏱️ **Complexity Analysis** - Understand time and space complexity
 - 🎯 **Common Pitfalls** - Avoid mistakes others make
 
 **Created by [Amir Charkhi](https://www.linkedin.com/in/amircharkhi) | [AI Tech Institute](https://github.com/wvlt/hackerrank-dsa-tutorial)**
+
+---
+
+## 🎓 What You'll Learn
+
+- **Arrays & 2D Arrays** - Reversal, rotation, pattern recognition
+- **Dynamic Arrays** - XOR operations, modular arithmetic
+- **Linked Lists** - Traversal, insertion (head, tail, position), deletion, reversal
+- **Hash Maps** - Frequency counting, optimization techniques
+- **Problem-Solving Strategies** - Multiple approaches, optimization
 
 ---
 
@@ -201,12 +149,40 @@ Watch the complete video explanations on YouTube:
 
 ---
 
+## 🤝 Contributing
+
+Found an error or want to improve a tutorial? Contributions are welcome!
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
 ## 📝 Topics Covered
 
 - **Data Structures**: Arrays, 2D Arrays, Linked Lists, Hash Maps
 - **Algorithms**: Array manipulation, Pattern recognition, Frequency counting, Linked list operations
 - **Concepts**: Time complexity, Space complexity, Optimization techniques
 - **Python**: Slicing, List operations, Dictionary operations, Object-oriented programming, Pointer manipulation
+
+---
+
+## 🔍 Search Keywords
+
+This repository helps you learn:
+- HackerRank solutions
+- Data structures and algorithms
+- Python DSA tutorials
+- Coding interview preparation
+- Array problems
+- Linked list problems
+- Algorithm optimization
+- Time complexity analysis
+- Space complexity analysis
+- Interactive coding tutorials
 
 ---
 
@@ -236,6 +212,17 @@ If these tutorials have helped you in your coding journey, please consider:
 **🎥 Subscribing to [YouTube Channel](https://www.youtube.com/@AmirCharkhi)** - Get notified of new video tutorials
 
 **💼 Connecting on [LinkedIn](https://www.linkedin.com/in/amircharkhi)** - Join the community of learners
+
+---
+
+### **Why Your Support Matters**
+
+- 🌍 **Reach More Learners**: Stars and shares help this repository appear in search results
+- 📚 **Create More Content**: Your engagement encourages creation of additional tutorials
+- 🤝 **Build Community**: Together we can make DSA learning accessible to everyone
+- 🎯 **Help Others Succeed**: Your recommendation could help someone land their dream job
+
+**Every star, share, and subscription makes a difference. Thank you for being part of this learning community! 🙏**
 
 [![GitHub stars](https://img.shields.io/github/stars/wvlt/hackerrank-dsa-tutorial?style=for-the-badge)](https://github.com/wvlt/hackerrank-dsa-tutorial/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/wvlt/hackerrank-dsa-tutorial?style=for-the-badge)](https://github.com/wvlt/hackerrank-dsa-tutorial/network/members)
